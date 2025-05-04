@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  z-index: 0;
+  user-select: none;
+}
+/* Default light mode styles in :root */
+:root {
+  --nav-text-color: #13212d;
+  --nav-bg-color: #8391a1;
+  --body-text-color: #ffeccb;
+}
+
+/* Override styles when dark mode is active */
+body.dark {
+  --nav-text-color: #ffeccb;
+  --nav-bg-color: #2b2b2b;
+  --body-text-color: #1e1e1e;
+}
+
+/* Apply colors globally */
+body {
+  background-color: var(--body-text-color);
+  color: var(--nav-text-color);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+nav {
+  background-color: var(--nav-bg-color);
+  color: var(--nav-text-color);
+  position: fixed;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 10vh;
+}
+
+/* Push content below the navbar */
+main {
+  padding-top: 10vh; /* This pushes content down by the height of the nav */
+}
+
+h1 {
+  margin-left: 20px;
+  font-size: 2rem;
+  color: var(--nav-text-color);
+}
+
+ul {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  font-size: 1.8rem;
+}
+
+li {
+  list-style-type: none;
+  position: relative;
+  user-select: none;
+  transition: 0.6s;
+}
+
+li:hover {
+  scale: 1.1;
+  cursor: pointer;
+}
+
+li::after {
+  content: "";
+  position: absolute;
+  background-color: var(--nav-text-color);
+  transition: 0.6s;
+  width: 0;
+}
+
+li:hover::after {
+  width: 100%;
+  height: 2px;
+  top: 100%;
+  left: 0;
+}
+
+/* Fade animation for theme icon */
+#themeIcon {
+  width: 4vw;
+  transition: opacity 0.4s ease;
+  margin-right: 10px;
+}
+#themeIcon:hover {
+  cursor: pointer;
+}
+#themeIcon.fade {
+  opacity: 0;
+}
