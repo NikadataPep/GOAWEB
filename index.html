@@ -3,28 +3,96 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>GOA Student Project</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <nav>
-      <h1>GOA</h1>
-      <ul>
-        <li onclick="scroll('introSect')">Intro</li>
-        <li onclick="scroll('mentorsSect')">Mentors</li>
-        <li onclick="scroll('aboutSect')">About</li>
-        <li onclick="scroll('opinionSect')">Opinion</li>
-        <li onclick="scroll('popularitySect')">Popularity</li>
-      </ul>
-
-      <img id="themeIcon" src="images/sun.png" alt="Theme Icon" />
+      <div class="nav-container">
+        <h1 class="goa-header">GOA</h1>
+        <ul class="nav-links">
+          <li><a href="#intro">Intro</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#opinion">Opinion</a></li>
+          <li><a href="#popularity">Popularity</a></li>
+        </ul>
+        <div class="theme-toggle">
+          <img id="themeIcon" src="images/sun.png" alt="Theme Icon" />
+        </div>
+      </div>
     </nav>
+
     <main>
-      <section id="introSect">Intro Content</section>
-      <section id="mentorsSect">Mentors Content</section>
-      <section id="aboutSect">About Content</section>
-      <section id="opinionSect">Opinion Content</section>
-      <section id="popularitySect">Popularity Content</section>
+      <section id="intro" class="section">
+        <div class="section-container">
+          <h1 class="section-title">Intro</h1>
+          <div class="logo-typewriter-div">
+            <div class="card">
+              <div class="typewriter-container">
+                <div id="typeWriterDiv" class="typewriter-box"></div>
+              </div>
+            </div>
+            <img class="goa-logo" src="images/GOA.png" alt="" />
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="section-container">
+          <h1 class="section-title">About GOA</h1>
+
+          <div class="card">
+            <p>
+              მიზნებზე ორიენტირებული აკადემია (GOA), ბატონი ნიკა კეშელავას
+              მეთაურობით დაარსდა 2022 წელს.
+            </p>
+            <p>
+              გოას მუშაობის სტილი ძალიან განსხვავდება სხვა აკადემიებისგან, აქ
+              მოსწავლეებს ყავთ ლიდერები, რომლებიც ეხმარებიან მოსწავლეს
+              გაკვეთილის შემდეგ გაუგებარ საკითხებში.
+            </p>
+          </div>
+          <div class="images-about">
+            <img src="images/goaLand.png" alt="" />
+            <img src="images/goaOffice.png" alt="" />
+            <img src="images/goaPushUps.png" alt="" />
+          </div>
+        </div>
+      </section>
+
+      <section id="opinion" class="section">
+        <div class="section-container">
+          <h1 class="section-title">My Opinion</h1>
+          <div class="card">
+            <p>
+              ჩემი აზრით საქართველოში ერთ-ერთი საუკეთესო აკადემიაა, მართალია
+              ბევრ რამეს შევცვლიდი, მაგრამ აკადემია სწორ გზაზეა და დარწმუნებული
+              ვარ მომავალში ბევრი რამ გამოსწორდება.
+            </p>
+            <strong>რას გამოვასწორებდი:</strong>
+            <ul>
+              <li>
+                მოვაწყობდი კოლაბორაციულ გაკვეთილებს სხვა აკადემიის მოსწავლეებთან
+                ერთად
+              </li>
+              <li>ჰაკათონებს უფრო ხშირად მოვაწყობდი</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="popularity" class="section">
+        <div class="section-container">
+          <h1 class="section-title">Popularity</h1>
+          <div class="card">
+            <div id="popularityBars" class="bars-container"></div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <script src="script.js"></script>
