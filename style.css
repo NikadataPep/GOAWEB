@@ -43,6 +43,18 @@ body {
   transition: all 0.4s ease;
   line-height: 1.6;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* Matrix canvas styling */
+#matrix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.15;
 }
 
 /* Navigation */
@@ -98,12 +110,10 @@ nav {
 .nav-links li a::after {
   content: "";
   position: absolute;
-
   width: 0;
   top: 100%;
   left: 0;
   height: 2px;
-
   transition: width 0.3s ease;
   background: linear-gradient(
     90deg,
@@ -215,7 +225,7 @@ nav {
   margin: 1.5rem 0;
   padding-left: 2rem;
 }
-#about img {
+.images-about img {
   width: 18vw;
   height: 24vh;
   object-fit: cover;
@@ -266,19 +276,19 @@ nav {
   border-radius: 12px;
   object-fit: contain;
   transition: all 0.5s ease;
-  box-shadow: 0 0 15px 5px var(--primary-color); /* Initial glow */
-  animation: pulseGlow 2s ease-in-out infinite; /* Pulse effect */
+  box-shadow: 0 0 15px 5px var(--primary-color);
+  animation: pulseGlow 2s ease-in-out infinite;
 }
 
 @keyframes pulseGlow {
   0% {
-    box-shadow: 0 0 10px 2px #19910b; /* Small glow */
+    box-shadow: 0 0 10px 2px #19910b;
   }
   50% {
-    box-shadow: 0 0 25px 5px #19910b; /* Stronger glow */
+    box-shadow: 0 0 25px 5px #19910b;
   }
   100% {
-    box-shadow: 0 0 10px 2px #19910b; /* Back to initial glow */
+    box-shadow: 0 0 10px 2px #19910b;
   }
 }
 .goa-logo:hover {
@@ -375,7 +385,7 @@ nav {
 
 @media (max-width: 768px) {
   nav {
-    height: 80px;
+    height: 50px;
   }
 
   .nav-container {
@@ -440,7 +450,7 @@ nav {
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 600px) {
   .nav-container {
     padding: 0 15px;
   }
@@ -448,17 +458,23 @@ nav {
     height: 30vh;
   }
   .goa-header {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 
   .nav-links {
-    gap: 1rem;
+    gap: 0.7rem;
   }
 
-  .nav-links li {
+  .images-about img {
+    width: 120px;
+    height: 100px;
+  }
+  .nav-links li a {
     font-size: 0.9rem;
   }
-
+  #themeIcon {
+    scale: 0.6;
+  }
   .section-container {
     padding: 0 15px;
   }
@@ -467,13 +483,12 @@ nav {
     font-size: 1.8rem;
   }
 
-  .card {
-    padding: 1.5rem;
+  .card p {
+    font-size: 0.9rem;
   }
 
   .typewriter-box {
     font-size: 1rem;
-
     height: 30vh;
   }
 
