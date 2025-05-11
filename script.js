@@ -8,113 +8,118 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// ====== Characters used in the Matrix effect ======
+/// მატრიცის ანიმაციისთვის საჭირო ცვლადები:
 const chars = "01";
 const fontSize = 18;
 const columns = Math.floor(canvas.width / fontSize); //// სვეტების რაოდენობა
-const drops = []; // Array to track Y positions for each column
+const drops = []; //// მასივი ინახავ იმ Y კოორდინატს საიტანაც იწყება rain drop ანიმაცია
 
-// ====== Initialize Y position of each drop (column) randomly above screen ======
+//// თითოეულ drop-ს დაუგენერირებს Y პოზიციას საიდანაც ჩამოვარდება
 for (let i = 0; i < columns; i++) {
-  drops[i] = Math.random() * -200; // Start some drops above the screen
+  drops[i] = Math.random() * 200; //// ვარდნა იწყება ეკრანის ზევიდან
 }
 
-// ====== Variable to store the animation interval reference ======
+//| ანიმაციის ინტერვალის ცვლადი
 let matrixInterval;
 
-// ====== Main function to draw the Matrix rain ======
+//! მთავარი, მატრიცის ხატვის ფუნქცია
 function draw() {
-  // Create a transparent black background to leave fading trails
+  //<> ctx-ის დახმარებით კანვას გადაეფარება შავი გამჭირვალე მართკუთხედი
   ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  //// რის შედეგადაც მიიღება კვალის დატოვების ანიმაცია
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Check current theme and set appropriate green color for text
-  const isDark = document.body.classList.contains("dark");
-  ctx.fillStyle = isDark ? "#0F0" : "#006400"; // Bright green for dark, darker green for light
+  ctx.fillStyle = "#0F0"; //// 1-ის და 0-ის ფერი
   ctx.font = fontSize + "px 'Fira Code', monospace";
 
   // Loop through each column and draw a random binary character
   for (let i = 0; i < drops.length; i++) {
-    const text = chars[Math.floor(Math.random() * chars.length)]; // Randomly pick 0 or 1
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize); // Draw the character
+    //// რანდომულად აირჩევს 1-ს ან 0-ს
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    //// შეავსებს (დახატავს) მატრიცის ანიმაცია
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-    // If a drop reaches the bottom, reset it randomly to the top
+    //// როგორც კი drop-ი მოხვდება საიტის ბოლოში რესეტდება და ისევ თავში ადის
     if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      //// 0.975 ვამოწმებ რადგან კიდევ უფრო რანდომული იყოს
       drops[i] = 0;
     }
 
-    // Move the drop down by one line
+    //// ერთი რიგით (ნაბიჯით) ქვევით ჩადის
     drops[i]++;
   }
 }
 
-// ====== Resize canvas when the browser window changes size ======
+//// ბრაუზერის "ფანჯარა"-სთან ერთად შეცვლის კანვას ზომას
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
 
-// ====== Theme toggle button logic ======
-const themeBtn = document.getElementById("themeIcon"); // Button to switch theme
-let isDark = localStorage.getItem("theme") === "dark"; // Get saved theme preference
+//| თემის გადართვა
+const themeBtn = document.getElementById("themeIcon"); /// ღილაკი
+/// ლოკალურად შეინახავს რომელ თემაზეც გაჩერდა საიტი
+let isDark = localStorage.getItem("theme") === "dark";
 
-// Apply current theme to body and update canvas/matrix
+//// body-ისთვის თემის მინიჭება და მატრიცის განახლება
 function applyTheme() {
-  document.body.classList.toggle("dark", isDark); // Add/remove dark class
-  themeBtn.src = isDark ? "images/moon.png" : "images/sun.png"; // Change icon
-  localStorage.setItem("theme", isDark ? "dark" : "light"); // Save preference
+  document.body.classList.toggle("dark", isDark); //* dark-ის მინიჭება/მოშორება
+  themeBtn.src = isDark ? "images/moon.png" : "images/sun.png";
+  //<> დაკლიკების მიხედვით ინახავს საიტის თემას
+  localStorage.setItem("theme", isDark ? "dark" : "light");
 
-  // If dark mode: start matrix animation
+  //// ბნელი რეჟიმისთვის მატრიცა იქნება აქტიური
   if (isDark) {
-    if (!matrixInterval) matrixInterval = setInterval(draw, 33); // Start drawing at ~30 FPS
+    if (!matrixInterval) matrixInterval = setInterval(draw, 35);
   } else {
-    clearInterval(matrixInterval); // Stop animation
+    clearInterval(matrixInterval); /// ანიმაციის გაჩერება
     matrixInterval = null;
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the matrix canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height); //// მატრიცის "drop"-ების მოსაშორებლად
   }
 }
 
-// When the theme button is clicked, toggle dark/light and apply changes
+//// icon-ზე დაკლიკებისას გაეშვება applyTheme ფუნქცია
 themeBtn.addEventListener("click", () => {
   isDark = !isDark;
   applyTheme();
 });
 
-// ====== Typewriter animation for introduction text ======
+//// ბეჭდვის/წაშლის ანიმაცია
 function typeWriter() {
-  const box = document.getElementById("typeWriterDiv"); // Text container
+  const box = document.getElementById("typeWriterDiv"); /// ტექსტის ყუთი (კონტეინერი)
   const messages = [
     "ეს საიტი შექმნილია გოას მოსწავლის მიერ, საიტში ჩავაქსოვე ის ყველაფერი რაც აკადემიაში შევისწავლე.",
     "This website was created by a GOA student. This website showcases everything I have learnt here.",
   ];
-  let currentMsg = 0; // Current message index
-  let position = 0; // Character index in current message
-  let isDeleting = false; // Whether we're deleting text
-  const speed = 40; // Typing speed (ms per letter)
+  let currentMsg = 0; //// ახლანდელი ინდექსი
+  let position = 0; //// Character-ის პოზიცია ტექსტში
+  let isDeleting = false; /// იშლება თუ არა ტექსტი
+  const speed = 40; //// ბეჭდვის სისწრაფე
 
-  // Inner typing function
+  //// ბეჭდვის ფუნქცია (რეკურსიის გამოყენებით)
   function type() {
-    const text = messages[currentMsg]; // Get current message
+    /// წვდება ტექსტს ქართულს ან ინგლისურს ინდექსის მიხედვით
+    const text = messages[currentMsg];
 
     if (isDeleting) {
-      // Delete one character
+      //// შლის თითო-თითო ქარაქთერს
       box.innerHTML = text.substring(0, position - 1);
       position--;
 
-      // If finished deleting, switch message
+      //// ბოლომდე წაშლისას გადაცვლის ტექსტს
       if (position === 0) {
         isDeleting = false;
         currentMsg = (currentMsg + 1) % messages.length;
-        setTimeout(type, 1000); // Pause before typing next message
+        setTimeout(type, 1000); //// შეყოვნდება 1 წამი ახლის აკრეფამდე
       } else {
         setTimeout(type, speed);
       }
     } else {
-      // Add one character
+      //// კრეფს თითო ასოს/სიმბოლოს
       box.innerHTML = text.substring(0, position + 1);
       position++;
 
-      // When message is fully typed, pause then delete
+      //// როცა ტექსის წერას მორჩება დაიწყებს წაშლას
       if (position === text.length) {
         isDeleting = true;
         setTimeout(type, 1000);
@@ -124,39 +129,39 @@ function typeWriter() {
     }
   }
 
-  type(); // Start typing
+  type();
 }
 
-// ====== Create popularity bars for schools ======
+//<> ====== პოპულარულობის სვეტები ======
 function showBars() {
-  const container = document.getElementById("popularityBars"); // Bar container
-  const schools = [
+  const container = document.getElementById("popularityBars"); //// კონტეინერი
+  const academies = [
     { name: "GOA", students: 5000, color: "rgba(32, 194, 14, 0.7)" },
     { name: "Mziuri", students: 4300, color: "rgba(74, 144, 226, 0.7)" },
     { name: "Novatori", students: 3000, color: "rgba(226, 184, 74, 0.7)" },
     { name: "ITStep", students: 2400, color: "rgba(226, 74, 74, 0.7)" },
   ];
 
-  // Create and append a bar for each school
-  for (let i = 0; i < schools.length; i++) {
+  //// თითოეული აკადემიისთვის შექმნის სვეტს რაოდენობების პროპორციულად
+  for (let i = 0; i < academies.length; i++) {
     const barDiv = document.createElement("div");
-    barDiv.className = "popularity-bar"; // Container for each school
+    barDiv.className = "popularity-bar";
 
     const bar = document.createElement("div");
     bar.className = "bar";
-    bar.style.height = schools[i].students / 15 + "px"; // Height proportional to students
-    bar.style.backgroundColor = schools[i].color;
+    bar.style.height = academies[i].students / 15 + "px";
+    bar.style.backgroundColor = academies[i].color;
 
     const infoDiv = document.createElement("div");
     infoDiv.className = "value-label-div";
 
     const name = document.createElement("div");
     name.className = "bar-label";
-    name.textContent = schools[i].name;
+    name.textContent = academies[i].name;
 
     const students = document.createElement("div");
     students.className = "bar-value";
-    students.textContent = schools[i].students.toLocaleString(); // Format number nicely
+    students.textContent = academies[i].students.toLocaleString(); // Format number nicely
 
     infoDiv.append(name, students);
     barDiv.append(bar, infoDiv);
@@ -164,26 +169,30 @@ function showBars() {
   }
 }
 
-// ====== Highlight active navigation link based on scroll position ======
+//// სქროლვის ანიმაცია
 function manualScrollActive() {
-  const sections = document.querySelectorAll("section"); // All sections of the page
-  const navItems = document.querySelectorAll(".nav-links li"); // All nav list items
+  const sections = document.querySelectorAll("section"); /// ყველა სექცია
+  // /// ნავიგაციის ყველა list ელემენტი
+  const navItems = document.querySelectorAll(".nav-links li");
 
-  // On scroll, find which section is in view
+  //// scrolling-ის დროს შევამოწმოთ რომელ სექციაზე დგას
   window.addEventListener("scroll", () => {
     for (let i = 0; i < sections.length; i++) {
+      ///* დაშორება საიტის თავიდან სექცია დასაწყისამდე
       const sectionTop = sections[i].offsetTop;
+      //<> სექციის სიმაღლე
       const sectionHeight = sections[i].offsetHeight;
-      const scrollPos = window.scrollY + 120; // Offset to trigger earlier
+      //! ჩამოსქროლილ პოზიციას + 120px
+      const scrollPos = window.scrollY + 120;
 
-      // If user is currently in this section
+      /// თუ მომხმარებელი ამ სექციაშია
       if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-        // Remove "active" from all nav items
+        /// active-ს მოაშორებს ყველა სხვას
         for (let j = 0; j < navItems.length; j++) {
           navItems[j].classList.remove("active");
         }
 
-        // Add "active" to the current nav item
+        //// active დაუმატებს მხოლოდ ეხლანდელ სექციას
         navItems[i].classList.add("active");
         break;
       }
@@ -191,11 +200,60 @@ function manualScrollActive() {
   });
 }
 
-// ====== On page load, apply all dynamic features ======
+function initMentorSlider() {
+  const mentors = [
+    { name: "ნიკა კვარაცხელია", image: "mentors/kvara.png" },
+    { name: "ლუკა ცხვარაძე", image: "mentors/luka.png" },
+    { name: "გაბრიელ მოლოდინი", image: "mentors/gobron.png" },
+    { name: "დათა დიასამიძე", image: "mentors/diasa.png" },
+    { name: "დათა თეზელაშვილი", image: "mentors/tezela.png" },
+    { name: "ლაშა ლომიძე", image: "mentors/lasha.png" },
+    { name: "დავით ჯანეზაშვილი", image: "mentors/janeza.png" },
+  ];
+  const track = document.getElementById("mentorTrack");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  track.innerHTML = "";
+
+  mentors.forEach((mentor) => {
+    const card = document.createElement("div");
+    card.className = "mentor-card";
+
+    card.innerHTML = `
+      <img src="${mentor.image}" alt="${mentor.name}" />
+      <h3>${mentor.name}</h3>
+    `;
+
+    track.appendChild(card);
+  });
+
+  const cards = document.querySelectorAll(".mentor-card");
+  let currentIndex = 0;
+  const totalCards = cards.length;
+
+  function updateSlider() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }
+
+  prevBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+    updateSlider();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % totalCards;
+    updateSlider();
+  });
+}
+
+//// გვერდის ჩატვირთვისას ფუნქციების ინიციალიზაცია
 window.addEventListener("DOMContentLoaded", () => {
-  applyTheme(); // Load saved theme and start/stop matrix
-  typeWriter(); // Start typewriter animation
-  showBars(); // Render popularity bars
-  manualScrollActive(); // Enable scroll-based nav highlighting
-  document.querySelector(".nav-links li")?.classList.add("active"); // Activate first nav link
+  initMentorSlider();
+
+  applyTheme();
+  typeWriter();
+  showBars();
+  manualScrollActive();
+  document.querySelector(".nav-links li")?.classList.add("active");
 });

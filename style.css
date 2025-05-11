@@ -31,6 +31,7 @@ body.dark {
   padding: 0;
   box-sizing: border-box;
   user-select: none;
+  transition: 0.6s;
 }
 html {
   scroll-behavior: smooth;
@@ -40,7 +41,7 @@ body {
   font-family: "Inter", sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: all 0.4s ease;
+  transition: all 0.6s ease;
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
@@ -120,7 +121,6 @@ nav {
     var(--primary-color),
     var(--underline-color)
   );
-  animation: titleUnderline 1.7s ease infinite alternate;
 }
 
 .nav-links li.active a::after {
@@ -141,12 +141,22 @@ nav {
   transition: transform 0.3s ease;
 }
 
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
 #themeIcon {
   width: 55px;
   height: 55px;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
 }
-
 .section {
   min-height: 100vh;
   display: flex;
@@ -197,7 +207,7 @@ nav {
   }
 }
 
-/* Cards */
+/*| card-ების სტილი */
 .card {
   background-color: var(--card-bg);
   border-radius: 16px;
@@ -245,7 +255,7 @@ nav {
   margin-bottom: 0.8rem;
 }
 
-/* Typewriter */
+/*// ტექსტის საბეჭდი */
 .logo-typewriter-div {
   display: flex;
   align-items: center;
@@ -295,7 +305,7 @@ nav {
   transform: scale(1.05);
 }
 
-/* Popularity Bars */
+/*/ სვეტები*/
 .bars-container {
   display: flex;
   align-items: flex-end;
@@ -314,16 +324,18 @@ nav {
 }
 
 .bar {
-  width: 100%;
+  width: 80%;
   border-radius: 8px 8px 0 0;
-  transition: height 1s ease;
+  transition: height 1s ease, transform 0.6s;
 }
-
+.bar:hover {
+  transform: scale(1.1);
+}
 .value-label-div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .bar-label {
@@ -337,7 +349,6 @@ nav {
   font-size: 1.3rem;
 }
 
-/* Active Navigation */
 .nav-links li.active {
   color: var(--primary-color);
 }
@@ -345,9 +356,76 @@ nav {
 .nav-links li.active::after {
   width: 100%;
 }
+/*/ მენტორის სლაიდერის კონტეინერი */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
 
-/* Responsive Design */
+.slider-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+/*/ მენტორების კარტები */
+.mentor-card {
+  flex: 0 0 100%;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.mentor-card img {
+  width: 350px;
+  height: 350px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  object-fit: cover;
+}
+.mentor-card img:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+/*/ სლიდერის ისრები */
+#prevBtn,
+#nextBtn {
+  position: absolute;
+  top: 50%;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+#prevBtn {
+  left: 15px;
+}
+
+#nextBtn {
+  right: 15px;
+}
+#prevBtn:hover,
+#nextBtn:hover {
+  transform: scale(1.5);
+}
+#prevBtn,
+#nextBtn {
+  width: 50px;
+  height: 50px;
+}
+h3 {
+  margin-top: 20px;
+}
+
 @media (max-width: 1200px) {
+  .nav-links li a {
+    font-size: 1.3rem;
+  }
   .nav-container {
     padding: 0 30px;
   }
@@ -355,15 +433,25 @@ nav {
   .section-container {
     padding: 0 30px;
   }
+  .mentor-card img {
+    width: 300px;
+    height: 300px;
+  }
 
   .card {
     padding: 2.5rem;
+  }
+  .card p {
+    font-size: 1.4rem;
   }
 }
 
 @media (max-width: 992px) {
   .nav-links {
     gap: 2rem;
+  }
+  .nav-links li a {
+    font-size: 1.2rem;
   }
 
   .goa-header {
@@ -376,6 +464,10 @@ nav {
 
   .typewriter-box {
     font-size: 1.1rem;
+  }
+  .mentor-card img {
+    width: 250px;
+    height: 250px;
   }
 
   .bars-container {
@@ -397,14 +489,14 @@ nav {
   }
 
   .nav-links {
-    gap: 1.5rem;
+    gap: 1.4rem;
   }
 
   .section-container {
     padding: 0 20px;
   }
 
-  .nav-links li {
+  .nav-links li a {
     font-size: 1rem;
   }
 
@@ -421,7 +513,9 @@ nav {
   .card {
     padding: 2rem;
   }
-
+  .card p {
+    font-size: 1.1rem;
+  }
   .logo-typewriter-div {
     flex-direction: column;
   }
@@ -434,6 +528,10 @@ nav {
   .goa-logo {
     width: 200px;
     order: -1;
+  }
+  .mentor-card img {
+    width: 200px;
+    height: 200px;
   }
 
   .bars-container {
